@@ -42,3 +42,13 @@ small {
 .App-link {
   color: #61dafb;
 }
+
+.flags img {
+  bottom: 50px;
+}
+
+@media (max-width: 500px) {
+  .flags{
+    transform: scale(0.7);
+  }
+}

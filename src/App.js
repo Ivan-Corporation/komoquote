@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import axios from 'axios';
 import './App.css';
 import Switch from '@mui/material/Switch';
@@ -7,13 +7,48 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import russia from './assets/russia.png'
 import usa from './assets/united-states.png'
+import germany from './assets/germany.png'
+import france from './assets/france.png'
+import button from './assets/refresh-button.png'
 import './styles/links.css'
 import './styles/buttondata.scss'
+import { pink } from '@mui/material/colors';
+import Radio from '@mui/material/Radio';
+
 
 function App() {
   let [responseData, setResponseData] = React.useState('');
-  let [language, setLanguage] = React.useState('en');
 
+  // const [language, setLanguage] = React.useState(['en'])
+  const saved = localStorage.getItem("language");
+  const initialValue = JSON.parse(saved) || 'en';
+
+  
+  const [language, setLanguage] = React.useState(initialValue || 'en');
+
+  
+  
+
+  localStorage.setItem("language", JSON.stringify(language));
+
+
+  console.log(language)
+
+  const handleChange = (event) => {
+    setLanguage(event.target.value);
+    window.location.reload(true);
+  };
+
+  const controlProps = (item) => ({
+    checked: language === item,
+    onChange: handleChange,
+    value: item,
+    name: 'color-radio-button-demo',
+    inputProps: { 'aria-label': item },
+    
+  });
+
+ 
 
   const fetchData = React.useCallback(() => {
     axios({
@@ -39,12 +74,9 @@ function App() {
     fetchData()
   }, [fetchData])
 
+  
+  
 
-  const [checked, setChecked] = React.useState(false);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
 
   return (
     <>
@@ -54,15 +86,18 @@ function App() {
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             Komoquote ණ
           </Typography>
+            <div className='flags'>
                <img src={usa} style={{width:'30px'}}/>
-               <Switch
-            checked={checked}
-            onChange={handleChange}
-            color="primary"
+                <Radio {...controlProps('en')} />
+                <img src={russia} style={{width:'30px'}}/>
+                <Radio {...controlProps('ru')} color="secondary" />
+                <img src={germany} style={{width:'30px'}}/>
+                <Radio {...controlProps('de')} color="success" />
+                <img src={france} style={{width:'30px'}}/>
+                <Radio {...controlProps('fr')} color="default" />
                 
-            inputProps={{ 'aria-label': 'controlled' }}
-          /> 
-          <img src={russia} style={{width:'30px'}}/>
+              
+              </div>
               </Toolbar>
       </AppBar>
     
@@ -74,9 +109,9 @@ function App() {
  
       <header className="App-header">
         <h1>
-          Fetching Data with React Hooks
+        ↧
         </h1>
-        <button className='buttondata' type='button' onClick={fetchData}>Click for Data</button>
+        <button className='buttondata' type='button' onClick={fetchData}><img src={button} style={{width:'50px'}}/></button>
     
       </header>
       <main>
@@ -88,27 +123,31 @@ function App() {
         }
         </main>
         <footer className='footer'>
-          <div class="wrapper">
-          <div class="icon facebook">
-            <div class="tooltip">Facebook</div>
-            <span><i class="fab fa-facebook-f"></i></span>
+          <div className="wrapper">
+          <a href='https://www.t.me/KomarIvan' style={{color:'orange'}}>
+          <div className="icon facebook">
+            <div className="tooltip">Telegram</div>
+            <span><i className="fab fa-telegram"></i></span>
           </div>
-          <div class="icon twitter">
-            <div class="tooltip">Twitter</div>
-            <span><i class="fab fa-twitter"></i></span>
+          </a>
+          <a href='https://twitter.com/KomaHuman' style={{color:'orange'}}>
+          <div className="icon twitter">
+            <div className="tooltip">Twitter</div>
+            <span><i className="fab fa-twitter"></i></span>
           </div>
-          <div class="icon instagram">
-            <div class="tooltip">Instagram</div>
-            <span><i class="fab fa-instagram"></i></span>
+          </a>
+          <a href='https://github.com/Ivan-Corporation' style={{color:'orange'}}>
+          <div className="icon github">
+            <div className="tooltip">Github</div>
+            <span><i className="fab fa-github"></i></span>
           </div>
-          <div class="icon github">
-            <div class="tooltip">Github</div>
-            <span><i class="fab fa-github"></i></span>
+          </a>
+          <a href='https://www.youtube.com/channel/UCWj8NJUnyji2xHHThU1TTsw' style={{color:'orange'}}>
+          <div className="icon youtube">
+            <div className="tooltip">Youtube</div>
+            <span><i className="fab fa-youtube"></i></span>
           </div>
-          <div class="icon youtube">
-            <div class="tooltip">Youtube</div>
-            <span><i class="fab fa-youtube"></i></span>
-          </div>
+          </a>
         </div>
         </footer>
 
